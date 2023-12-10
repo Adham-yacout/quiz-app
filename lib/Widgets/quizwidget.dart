@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:animated_flip_card/animated_flip_card.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:quizapp/Answers/answers_view.dart';
 import 'package:quizapp/Landingpage/Landingpage.dart';
 import 'package:quizapp/Quizpage/quizpage_connector.dart';
 import 'package:quizapp/Quizpage/quizpage_vm.dart';
 import 'package:quizapp/model/QuizQuestion.dart';
+import 'package:quizapp/model/User_answers.dart';
+import 'package:quizapp/model/answers.dart';
 import 'package:quizapp/model/questions.dart';
 
 class QuizWidget extends StatefulWidget {
@@ -18,12 +21,13 @@ class QuizWidget extends StatefulWidget {
 
 }
 
-class _QuizWidgetState extends State<QuizWidget>implements quizpageconnector {
+class _QuizWidgetState extends State<QuizWidget>  implements quizpageconnector
+ {
   @override
 
   quizpage_viewmodel viewmodel=quizpage_viewmodel();
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     viewmodel.connector=this;
 
@@ -81,15 +85,17 @@ class _QuizWidgetState extends State<QuizWidget>implements quizpageconnector {
 
                   );
                 })
+
               ],
             ),),
+
           ),
     );
 
   }
 
   @override
-  void navigateToHome(List<String> answers) {
-    Navigator.pushReplacementNamed(context, Landingpage.routeName);
+  void navigateToAnswers(User_Answers answers) {
+    Navigator.pushReplacementNamed(context, Answers_view.routeName,arguments: answers);
   }
 }

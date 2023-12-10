@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:quizapp/Answers/answers_view.dart';
 import 'package:quizapp/Landingpage/Landingpage.dart';
 import 'package:quizapp/Quizpage/Quizpage.dart';
 
@@ -21,6 +22,7 @@ class QuizApp extends StatelessWidget {
               initialRoute: Landingpage.routeName,
               routes: {
                 Landingpage.routeName: (context) => Landingpage(),
+                Answers_view.routeName: (context) => Answers_view(),
                 Quizpage.routeName: (context) => Quizpage(),
               },
 

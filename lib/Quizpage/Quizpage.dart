@@ -5,9 +5,6 @@ import 'package:quizapp/Widgets/quizwidget.dart';
 
 class Quizpage extends StatelessWidget{
   static const String routeName = 'quiz_page';
-
- 
-
   @override
   Widget build(BuildContext context) {
     return  Stack(children: [
@@ -26,8 +23,5 @@ class Quizpage extends StatelessWidget{
     );
   }
 
-  @override
-  void navigateToHome(List<String> answers) {
-    // TODO: implement navigateToHome
-  }
+
 }
