@@ -58,6 +58,7 @@ class _QuizWidgetState extends State<QuizWidget>
       });
       Future.delayed(Duration(milliseconds: 900), () {
         setState(() {
+          viewmodel.dispose();
           showAnimation = false;
         });
         // Load next question or perform other actions
@@ -77,7 +78,8 @@ class _QuizWidgetState extends State<QuizWidget>
             if (showAnimation)
               SlideTransition(
                   position: viewmodel.offsetanimation,
-                  child: Containerwidget(
+                  child:
+                  Containerwidget(
                     questionanswers: questionanswers,
                     questionbody: viewmodel.current.Question,
                     answerquestion: viewmodel.answerQuestion,

@@ -31,7 +31,7 @@ class Containerwidget extends StatelessWidget {
           ),
           ...questionanswers.map((ans) {
             return Container(
-              decoration: BoxDecoration(),
+
               child: Container(
                 margin: EdgeInsets.all(12),
                 child: ClipRRect(

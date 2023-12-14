@@ -15,11 +15,11 @@ class quizpage_viewmodel extends ChangeNotifier {
   late AnimationController controller;
   void dispose() {
     controller.dispose();
-    super.dispose();
   }
   void answerQuestion(String ans) {
     currentQuestionIndex++;
-    Answers listans=Answers(Question: questions[currentQuestionIndex-1].Question, correctanswer: questions[currentQuestionIndex-1].answers[0], useranswer: ans);
+    Answers listans=Answers(Question: questions[currentQuestionIndex-1].Question,
+        correctanswer: questions[currentQuestionIndex-1].answers[0], useranswer: ans);
     answers.answers.add(listans);
     if(questions[currentQuestionIndex-1].answers[0]== ans)
       {
@@ -43,7 +43,7 @@ class quizpage_viewmodel extends ChangeNotifier {
 
   QuizQuestion getCurrentQuestion() {
     return questions[currentQuestionIndex];
-  }
+}
   List<String> getshuffledanswers(){
     return current.getshuffledquestions();
   }
