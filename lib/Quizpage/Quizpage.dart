@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:quizapp/Quizpage/quizpage_connector.dart';
 import 'package:quizapp/Widgets/quizwidget.dart';
 
-class Quizpage extends StatelessWidget{
+class Quizpage extends StatelessWidget  {
   static const String routeName = 'quiz_page';
   @override
   Widget build(BuildContext context) {

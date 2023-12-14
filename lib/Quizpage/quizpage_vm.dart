@@ -9,10 +9,14 @@ import '../model/questions.dart';
 class quizpage_viewmodel extends ChangeNotifier {
   late quizpageconnector connector;
   int currentQuestionIndex = 0;
+  late Animation<Offset> offsetanimation;
   QuizQuestion current= questions[0];
    User_Answers answers=User_Answers(answers: [], score: 0);
-
-
+  late AnimationController controller;
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
   void answerQuestion(String ans) {
     currentQuestionIndex++;
     Answers listans=Answers(Question: questions[currentQuestionIndex-1].Question, correctanswer: questions[currentQuestionIndex-1].answers[0], useranswer: ans);

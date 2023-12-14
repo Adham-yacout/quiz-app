@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/Answers/answers_view.dart';
-import 'package:quizapp/Landingpage/Landingpage.dart';
 import 'package:quizapp/Quizpage/quizpage_connector.dart';
 import 'package:quizapp/Quizpage/quizpage_vm.dart';
+import 'package:quizapp/Widgets/Containerwidget.dart';
 import 'package:quizapp/model/User_answers.dart';
 import 'package:quizapp/model/questions.dart';
 
@@ -17,12 +17,10 @@ class QuizWidget extends StatefulWidget {
 class _QuizWidgetState extends State<QuizWidget>
     with TickerProviderStateMixin
     implements quizpageconnector {
-  late AnimationController _controller;
-  late Animation<Offset> _offsetanimation;
   late quizpage_viewmodel viewmodel;
   late List<String> questionanswers;
   bool showAnimation = false;
-  int questionsnum=0;
+  int questionsnum = 0;
 
   @override
   void initState() {
@@ -32,25 +30,28 @@ class _QuizWidgetState extends State<QuizWidget>
     _initAnimation();
     questionanswers = viewmodel.getshuffledanswers();
   }
-void loadanswers(){
-  questionanswers = viewmodel.getshuffledanswers();
-}
+
+  void loadanswers() {
+    questionanswers = viewmodel.getshuffledanswers();
+  }
+
   void _initAnimation() {
-    _controller = AnimationController(
+    viewmodel.controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 900),
     );
-    _offsetanimation = Tween<Offset>(
+    viewmodel.offsetanimation = Tween<Offset>(
       begin: Offset(1.5, 0),
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticInOut));
+    ).animate(CurvedAnimation(
+        parent: viewmodel.controller, curve: Curves.elasticInOut));
   }
 
   void startAnimation() {
-    if(questionsnum<questions.length-1){
+    if (questionsnum < questions.length - 1) {
       questionsnum++;
-      _controller.reset();
-      _controller.forward();
+      viewmodel.controller.reset();
+      viewmodel.controller.forward();
       loadanswers();
       setState(() {
         showAnimation = true;
@@ -63,17 +64,10 @@ void loadanswers(){
         _initAnimation();
       });
     }
-
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return ChangeNotifierProvider(
       create: (BuildContext context) => viewmodel,
       child: Center(
@@ -82,102 +76,22 @@ void loadanswers(){
             // Animated card
             if (showAnimation)
               SlideTransition(
-                position: _offsetanimation,
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  width: MediaQuery.of(context).size.height * 0.8,
-                  margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 30.h),
-                  padding:
-                  EdgeInsets.all(MediaQuery.of(context).size.width / 12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        viewmodel.current.Question,
-                        style: TextStyle(fontSize: 20.sp),
-                      ),
-                      ...questionanswers.map((ans) {
-                        return Container(
-                          decoration: BoxDecoration(),
-                          child: Container(
-                            margin: EdgeInsets.all(12),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  viewmodel.answerQuestion(ans);
-                                  startAnimation();
-                                },
-                                child: Text(ans),
-                                style: ButtonStyle(
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(
-                                          horizontal: 20.w, vertical: 20.h)),
-                                  fixedSize: MaterialStateProperty.all(
-                                      Size(300.w, 70.h)),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      })
-                    ],
-                  ),
-                ),
-              ),
+                  position: viewmodel.offsetanimation,
+                  child: Containerwidget(
+                    questionanswers: questionanswers,
+                    questionbody: viewmodel.current.Question,
+                    answerquestion: viewmodel.answerQuestion,
+                    animation: startAnimation,
+                  )),
             // Static card
             Opacity(
-              opacity: showAnimation ? 0.0 : 1.0,
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.8,
-                width: MediaQuery.of(context).size.height * 0.8,
-                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 30.h),
-                padding:
-                EdgeInsets.all(MediaQuery.of(context).size.width / 12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.r),
-                  color: Colors.white,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      viewmodel.current.Question,
-                      style: TextStyle(fontSize: 20.sp),
-                    ),
-                    ...questionanswers.map((ans) {
-                      return Container(
-                        decoration: BoxDecoration(),
-                        child: Container(
-                          margin: EdgeInsets.all(12),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                viewmodel.answerQuestion(ans);
-                                startAnimation();
-                              },
-                              child: Text(ans),
-                              style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.symmetric(
-                                        horizontal: 20.w, vertical: 20.h)),
-                                fixedSize: MaterialStateProperty.all(
-                                    Size(300.w, 70.h)),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    })
-                  ],
-                ),
-              ),
-            ),
+                opacity: showAnimation ? 0.0 : 1.0,
+                child: Containerwidget(
+                  questionanswers: questionanswers,
+                  questionbody: viewmodel.current.Question,
+                  answerquestion: viewmodel.answerQuestion,
+                  animation: startAnimation,
+                )),
           ],
         ),
       ),
@@ -186,8 +100,7 @@ void loadanswers(){
 
   @override
   void navigateToAnswers(User_Answers answers) {
-    Navigator.pushReplacementNamed(
-        context, Answers_view.routeName,
+    Navigator.pushReplacementNamed(context, Answers_view.routeName,
         arguments: answers);
   }
 }
